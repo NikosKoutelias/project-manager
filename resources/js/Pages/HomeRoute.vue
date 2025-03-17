@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <router-link :to="{name: 'Login'}" class="text-sm/6 font-semibold text-gray-900">Log in <span
+                    <router-link :to="{name: 'Login'}" class="rounded-md bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-300 ease-in-out">Log in <span
                         aria-hidden="true">&rarr;</span></router-link>
                 </div>
             </nav>

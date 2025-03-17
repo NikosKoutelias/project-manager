@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-full">
-        <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
+        <Disclosure as="nav" class="bg-gray-800">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-16 items-center justify-between">
                     <div class="flex items-center">
@@ -26,7 +26,8 @@
                                         class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
                                         <span class="absolute -inset-1.5"/>
                                         <span class="sr-only">Open user menu</span>
-                                        <img class="size-8 rounded-full" :src="user.imageUrl" alt=""/>
+                                        <img class="size-8 rounded-full" :src="`https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 90)}.jpg`" alt=""/>
+                                        <span class="text-white ml-3">{{user.name}}</span>
                                     </MenuButton>
                                 </div>
                                 <transition enter-active-class="transition ease-out duration-100"
@@ -68,13 +69,15 @@
 
 <script setup>
 import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import axiosClient from "../axios.js";
+import router from "../router.js";
+import useUserStore from "../store/user.js";
+import {computed} from "vue";
+import {random} from "nanoid";
 
-const user = {
-    name: 'Tom Cook',
-    email: 'tom@example.com',
-    imageUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
+const userStore = useUserStore()
+
+const user = computed(() => userStore.user)
 const navigation = [
     {name: 'Dashboard', to: {name: 'Dashboard'}, current: true},
     {name: 'Companies', to: {name: 'Companies'}, current: false},
@@ -89,6 +92,8 @@ const userNavigation = [
 ]
 
 function logout() {
-    console.log('logout')
+    axiosClient.post('/logout').then((response) => {
+        router.push({ name: 'Home' });
+    })
 }
 </script>

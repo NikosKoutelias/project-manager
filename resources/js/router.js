@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
+import useUserStore from "./store/user.js";
 
 const routes = [
     {
@@ -11,14 +12,23 @@ const routes = [
         name: "Admin",
         component: () => import("./Pages/AdminRoute.vue"),
         children: [
-            {path: "/admin/dashboard", name:'Dashboard', component: () => import("./Pages/DashboardRoute.vue")},
-            {path: "/admin/companies", name:'Companies', component: () => import("./Pages/CompaniesRoute.vue")},
-            {path: "/admin/projects", name:'Projects', component: () => import("./Pages/ProjectsRoute.vue")},
-            {path: "/admin/users", name:'Users', component: () => import("./Pages/UsersRoute.vue")},
-            {path: "/admin/reports", name:'Reports', component: () => import("./Pages/ReportsRoute.vue")},
-            {path: "/admin/settings", name:'Settings', component: () => import("./Pages/SettingsRoute.vue")},
-            {path: "/admin/profile", name:'Profile', component: () => import("./Pages/ProfileRoute.vue")},
+            {path: "/admin/dashboard", name: 'Dashboard', component: () => import("./Pages/DashboardRoute.vue")},
+            {path: "/admin/companies", name: 'Companies', component: () => import("./Pages/CompaniesRoute.vue")},
+            {path: "/admin/projects", name: 'Projects', component: () => import("./Pages/ProjectsRoute.vue")},
+            {path: "/admin/users", name: 'Users', component: () => import("./Pages/UsersRoute.vue")},
+            {path: "/admin/reports", name: 'Reports', component: () => import("./Pages/ReportsRoute.vue")},
+            {path: "/admin/settings", name: 'Settings', component: () => import("./Pages/SettingsRoute.vue")},
+            {path: "/admin/profile", name: 'Profile', component: () => import("./Pages/ProfileRoute.vue")},
         ],
+        beforeEnter: async (to, from, next) => {
+            try {
+                const userStore = await useUserStore();
+                await userStore.fetchUser();
+                next();
+            } catch (err) {
+                next(false); // Cancel navigation if data fetching fails
+            }
+        },
     },
     {
         path: "/login",
