@@ -25,7 +25,7 @@ class UserAuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => Role::ROLES['USER'],
+            'role' => Role::fromArray('USER'),
         ]);
         $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
         return response()->json([

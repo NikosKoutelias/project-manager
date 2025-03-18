@@ -16,7 +16,7 @@ class RoleCast implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): string
     {
-        return Role::fromArray($value)->toString();
+        return Role::fromArray(strtoupper($value))->toString();
     }
 
     /**

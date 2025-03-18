@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('companies', function (Blueprint $table) {
-            $table->ulid();
+            $table->ulid('id')->primary();
             $table->string('name')->unique();
             $table->enum('country_of_operation', array_keys(CountryOfOperation::COUNTRIES))->index();
             $table->string('description');
