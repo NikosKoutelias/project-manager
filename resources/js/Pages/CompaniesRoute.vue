@@ -1,13 +1,31 @@
 <script setup>
-const companies = [
-    {id: 1, name: 'Companies Route', description: 'Companies decsription'},
-    {id: 2, name: 'Companies Route', description: 'Companies decsription'},
-    {id: 3, name: 'Companies Route', description: 'Companies decsription'},
-    {id: 4, name: 'Companies Route', description: 'Companies decsription'},
-]
+
+import {onMounted, ref, watch} from "vue";
+import axiosClient from "../axios.js";
+import CreateModal from "../Widgets/CreateModal.vue";
+
+const companies = ([])
+
+onMounted(() => {
+    axiosClient.get('/api/company').then((response) => {
+        console.log(response.data)
+        companies.value = response.data;
+    })
+
+})
+const isModalOpen = ref(false)
+function toggle() {
+    isModalOpen.value = !isModalOpen.value;
+}
+
 </script>
 
 <template>
+    <button @click="toggle"
+            class="rounded-md float-end bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-300 ease-in-out">
+        Create Company
+    </button>
+    <CreateModal v-if="isModalOpen" v-bind:label="'Company'"></CreateModal>
     <section>
         <div class="grid">
             <div class="card bg-gray-50" v-for="company in companies">

@@ -73,7 +73,6 @@ import axiosClient from "../axios.js";
 import router from "../router.js";
 import useUserStore from "../store/user.js";
 import {computed} from "vue";
-import {random} from "nanoid";
 
 const userStore = useUserStore()
 
