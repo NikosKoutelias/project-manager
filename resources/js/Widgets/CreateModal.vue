@@ -57,11 +57,13 @@
                                                         </div>
                                                         <div class="sm:col-span-2 sm:col-start-1">
                                                             <label for="city"
-                                                                   class="block text-sm/6 font-medium text-gray-900">City</label>
-                                                            <div class="mt-2">
-                                                                <input type="text" name="city" id="city"
-                                                                       autocomplete="address-level2"
-                                                                       class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"/>
+                                                                   class="block text-sm/6 font-medium text-gray-900">Country of operation</label>
+                                                            <div class="mt-2 grid grid-cols-1">
+                                                                <select id="role" name="role" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                                                    <option>Admin</option>
+                                                                    <option>User</option>
+                                                                </select>
+                                                                <ChevronDownIcon class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4" aria-hidden="true" />
                                                             </div>
                                                         </div>
                                                     </div>

@@ -17,6 +17,7 @@ class CompanyController extends Controller
                 'id' => $company->id,
                 'name' => $company->name,
                 'description' => $company->description,
+                'country_of_operation' => $company->country_of_operation,
             ];
         });
     }
@@ -29,6 +30,7 @@ class CompanyController extends Controller
         $request->validate([
             'name' => 'required|unique:companies',
             'description' => 'required',
+            'country_of_operation' => 'required',
         ]);
         $requestData = $request->all();
         $company = Company::create($requestData);
