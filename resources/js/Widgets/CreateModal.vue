@@ -1,3 +1,35 @@
+<script setup>
+import {ref} from 'vue'
+import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
+import {ChevronDownIcon} from '@heroicons/vue/16/solid'
+import {CubeIcon} from '@heroicons/vue/24/outline'
+import axiosClient from "../axios.js";
+
+const open = ref(true)
+const data = ref({
+    name: '',
+    description: '',
+    country_of_operation: '',
+})
+const props = defineProps(
+    {
+        label: String,
+        countries: Object,
+    },
+);
+
+function submitForm() {
+    const formData = new FormData();
+    formData.append('name', data.value.name);
+    formData.append('description', data.value.description);
+    formData.append('country_of_operation', data.value.country_of_operation);
+    axiosClient.post('/api/company', formData).then((response) => {
+        window.location.reload();
+    })
+}
+
+</script>
+
 <template>
     <TransitionRoot as="template" :show="open">
         <Dialog class="relative z-10" @close="open = false">
@@ -25,9 +57,9 @@
                                         <DialogTitle as="h3" class="text-center font-semibold text-gray-900">Create
                                             {{ props.label }}
                                         </DialogTitle>
-                                        <hr class="border-t border-gray-200" />
+                                        <hr class="border-t border-gray-200"/>
                                         <div class="mt-2">
-                                            <form>
+                                            <form @submit.prevent="submitForm">
                                                 <div class="space-y-12">
                                                     <div class="border-b border-gray-900/10 pb-12">
                                                         <div
@@ -39,6 +71,7 @@
                                                                     <div
                                                                         class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                                                         <input type="text" name="name" id="name"
+                                                                               v-model="data.name"
                                                                                class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                                                                                placeholder="Awesome company Inc."/>
                                                                     </div>
@@ -49,41 +82,54 @@
                                                                 <label for="about"
                                                                        class="block text-sm/6 font-medium text-gray-900">Description</label>
                                                                 <div class="mt-2">
-                                                                    <textarea name="description" id="description" rows="3"
+                                                                    <textarea name="description" id="description"
+                                                                              v-model="data.description"
+                                                                              rows="3"
                                                                               class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"/>
                                                                 </div>
-                                                                <p class="my-3 text-sm/6 text-gray-500">Description of {{props.label}}.</p>
+                                                                <p class="my-3 text-sm/6 text-gray-500">Description of
+                                                                    {{ props.label }}.</p>
                                                             </div>
                                                         </div>
-                                                        <div class="sm:col-span-2 sm:col-start-1">
+                                                        <div class="sm:col-span-2 sm:col-start-1"
+                                                             v-if="props.countries">
                                                             <label for="city"
-                                                                   class="block text-sm/6 font-medium text-gray-900">Country of operation</label>
+                                                                   class="block text-sm/6 font-medium text-gray-900">Country
+                                                                of operation</label>
                                                             <div class="mt-2 grid grid-cols-1">
-                                                                <select id="role" name="role" class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                                    <option>Admin</option>
-                                                                    <option>User</option>
+                                                                <select id="country_of_operation"
+                                                                        name="country_of_operation"
+                                                                        v-model="data.country_of_operation"
+                                                                        class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                                                    <option disabled value="">Select a country</option>
+                                                                    <option v-for="(key, country) in props.countries"
+                                                                            :value="country">
+                                                                        {{ key }}
+                                                                    </option>
                                                                 </select>
-                                                                <ChevronDownIcon class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4" aria-hidden="true" />
+                                                                <ChevronDownIcon
+                                                                    class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
+                                                                    aria-hidden="true"/>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
+                                                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                                    <button type="submit"
+                                                            class="inline-flex w-full justify-center rounded-md bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 sm:ml-3 sm:w-auto transition duration-300 ease-in-out"
+                                                    >Create
+                                                    </button>
+                                                    <button type="button"
+                                                            class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-100 transition duration-300 ease-in-out sm:mt-0 sm:w-auto"
+                                                            @click="open = false" ref="cancelButtonRef">Cancel
+                                                    </button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                <button type="button"
-                                        class="inline-flex w-full justify-center rounded-md bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 sm:ml-3 sm:w-auto transition duration-300 ease-in-out"
-                                        @click="open = false">Create
-                                </button>
-                                <button type="button"
-                                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-100 transition duration-300 ease-in-out sm:mt-0 sm:w-auto"
-                                        @click="open = false" ref="cancelButtonRef">Cancel
-                                </button>
-                            </div>
+
                         </DialogPanel>
                     </TransitionChild>
                 </div>
@@ -91,14 +137,3 @@
         </Dialog>
     </TransitionRoot>
 </template>
-
-<script setup>
-import {ref} from 'vue'
-import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
-import {ChevronDownIcon} from '@heroicons/vue/16/solid'
-import {CubeIcon} from '@heroicons/vue/24/outline'
-
-const open = ref(true)
-const props = defineProps({label: String});
-
-</script>

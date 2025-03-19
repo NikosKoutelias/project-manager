@@ -1,5 +1,8 @@
 import {createRouter, createWebHistory} from "vue-router";
 import useUserStore from "./store/user.js";
+import useCountryStore from "./store/countries.js";
+import useCompanyStore from "./store/companies.js";
+import useProjectStore from "./store/projects.js";
 
 const routes = [
     {
@@ -24,6 +27,16 @@ const routes = [
             try {
                 const userStore = await useUserStore();
                 await userStore.fetchUser();
+
+                const countryStore = await useCountryStore();
+                await countryStore.fetchCountries();
+
+                const companyStore = await useCompanyStore();
+                await companyStore.fetchCompanies();
+
+                const projectStore = await useProjectStore()
+                await projectStore.fetchProjects();
+
                 next();
             } catch (err) {
                 next(false); // Cancel navigation if data fetching fails

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Domain\Company;
+use App\Models\ValueObjects\CountryOfOperation;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -33,7 +34,11 @@ class CompanyController extends Controller
             'country_of_operation' => 'required',
         ]);
         $requestData = $request->all();
-        $company = Company::create($requestData);
+        $company = Company::create([
+            'name' => $requestData['name'],
+            'description' => $requestData['description'],
+            'country_of_operation' => CountryOfOperation::fromArray($requestData['country_of_operation']),
+        ]);
 
         return response()->json(['message' => 'Company created successfully.']);
     }
