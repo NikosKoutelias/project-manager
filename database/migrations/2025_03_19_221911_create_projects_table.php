@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->foreignUlid('company_id')->constrained('companies','id')->cascadeOnDelete();
             $table->string('name')->unique();
             $table->string('description');
             $table->timestamps();

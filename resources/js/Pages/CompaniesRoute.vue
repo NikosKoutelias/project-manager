@@ -23,7 +23,7 @@ function toggle() {
             class="rounded-md float-end bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-300 ease-in-out">
         Create Company
     </button>
-    <CreateModal v-if="isModalOpen" :label="'Company'" :countries="countries"></CreateModal>
+    <CreateModal v-if="isModalOpen" :label="'Company'" :countries="countries" :destination="$route.name"></CreateModal>
     <section>
         <div class="grid">
             <div class="card bg-gray-50" v-for="company in companies">

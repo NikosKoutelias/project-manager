@@ -23,7 +23,6 @@ function submitForm() {
             router.push({name: 'Admin'});
         })
             .catch((error) => {
-                console.log(error.response.data);
                 errors.value = error.response.data.errors;
             })
     })

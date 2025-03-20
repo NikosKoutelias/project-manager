@@ -10,6 +10,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::get('/users', function (Request $request) {
+        return \App\Models\SubDomains\User::all()->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+                'permissions' => $user->permissions,
+            ];
+        });
+    });
 
     Route::apiResource('/company', CompanyController::class);
     Route::apiResource('/project', ProjectController::class);

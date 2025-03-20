@@ -3,10 +3,14 @@
 import {ref} from "vue";
 import CreateModal from "../Widgets/CreateModal.vue";
 import useProjectStore from "../store/projects.js";
+import useCompanyStore from "../store/companies.js";
 
 const projectStore = useProjectStore()
+const companyStore = useCompanyStore()
 
 const projects = projectStore.projects
+const companies = companyStore.companies
+
 const isModalOpen = ref(false)
 function toggle() {
     isModalOpen.value = !isModalOpen.value;
@@ -19,7 +23,7 @@ function toggle() {
             class="rounded-md float-end bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-300 ease-in-out">
         Create Project
     </button>
-    <CreateModal v-if="isModalOpen" :label="'Projects'"></CreateModal>
+    <CreateModal v-if="isModalOpen" :label="'Project'" :companies="companies" :destination="$route.name"></CreateModal>
     <section>
         <div class="grid">
             <div class="card bg-gray-50" v-for="project in projects">

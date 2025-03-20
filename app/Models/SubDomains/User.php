@@ -7,6 +7,7 @@ use App\Casts\RoleCast;
 use Database\Factories\SubDomains\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Symfony\Component\Uid\Ulid;
@@ -41,6 +42,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    
 
     public static function boot()
     {

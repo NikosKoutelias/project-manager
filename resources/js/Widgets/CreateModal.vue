@@ -6,25 +6,42 @@ import {CubeIcon} from '@heroicons/vue/24/outline'
 import axiosClient from "../axios.js";
 
 const open = ref(true)
+const errors = ref({
+    name: [],
+    description: [],
+    country_of_operation: [],
+    company: [],
+})
 const data = ref({
     name: '',
     description: '',
     country_of_operation: '',
+    company: '',
 })
 const props = defineProps(
     {
         label: String,
+        destination: String,
         countries: Object,
+        companies: Object,
     },
 );
+
+const destination = props.destination.slice(props.destination.length - 3) === 'ies'
+    ? props.destination.slice(0, -3).toLowerCase() + 'y' : props.destination.slice(0, -1).toLowerCase()
 
 function submitForm() {
     const formData = new FormData();
     formData.append('name', data.value.name);
     formData.append('description', data.value.description);
     formData.append('country_of_operation', data.value.country_of_operation);
-    axiosClient.post('/api/company', formData).then((response) => {
+    formData.append('company', data.value.company);
+    axiosClient.post(`api/${destination}`, formData).then((response) => {
         window.location.reload();
+
+    }).catch(error => {
+        console.log(error.response);
+        errors.value = error.response.data.errors;
     })
 }
 
@@ -75,6 +92,9 @@ function submitForm() {
                                                                                class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                                                                                placeholder="Awesome company Inc."/>
                                                                     </div>
+                                                                    <p class="text-red-500 text-sm">
+                                                                        {{ errors.name ? errors.name[0] : '' }}
+                                                                    </p>
                                                                 </div>
                                                             </div>
 
@@ -87,10 +107,14 @@ function submitForm() {
                                                                               rows="3"
                                                                               class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"/>
                                                                 </div>
+                                                                <p class="text-red-500 text-sm">
+                                                                    {{ errors.description ? errors.description[0] : '' }}
+                                                                </p>
                                                                 <p class="my-3 text-sm/6 text-gray-500">Description of
                                                                     {{ props.label }}.</p>
                                                             </div>
                                                         </div>
+                                                        <!--   Extra Fields based on component     -->
                                                         <div class="sm:col-span-2 sm:col-start-1"
                                                              v-if="props.countries">
                                                             <label for="city"
@@ -110,8 +134,36 @@ function submitForm() {
                                                                 <ChevronDownIcon
                                                                     class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                                                                     aria-hidden="true"/>
+                                                                <p class="text-red-500 text-sm">
+                                                                    {{ errors.country_of_operation ? errors.country_of_operation[0] : '' }}
+                                                                </p>
                                                             </div>
                                                         </div>
+                                                        <div class="sm:col-span-2 sm:col-start-1"
+                                                             v-if="props.companies">
+                                                            <label for="city"
+                                                                   class="block text-sm/6 font-medium text-gray-900">Company
+                                                                Related</label>
+                                                            <div class="mt-2 grid grid-cols-1">
+                                                                <select id="country_of_operation"
+                                                                        name="country_of_operation"
+                                                                        v-model="data.company"
+                                                                        class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                                                    <option disabled value="">Select a company</option>
+                                                                    <option v-for="company in props.companies"
+                                                                            :value="company.id">
+                                                                        {{ company.name }}
+                                                                    </option>
+                                                                </select>
+                                                                <ChevronDownIcon
+                                                                    class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
+                                                                    aria-hidden="true"/>
+                                                                <p class="text-red-500 text-sm">
+                                                                    {{ errors.company ? errors.company[0] : '' }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  End Extra fields    -->
                                                     </div>
                                                 </div>
                                                 <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">

@@ -3,6 +3,7 @@
 namespace Database\Factories\SubDomains;
 
 use App\Models\SubDomains\User;
+use App\Models\ValueObjects\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -29,6 +30,8 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => Role::fromArray(array_rand(Role::ROLES)),
+            'permissions' => json_encode(['companies' => [], 'projects' => []]),
             'remember_token' => Str::random(10),
         ];
     }

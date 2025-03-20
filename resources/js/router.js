@@ -27,6 +27,7 @@ const routes = [
             try {
                 const userStore = await useUserStore();
                 await userStore.fetchUser();
+                await userStore.fetchUsers();
 
                 const countryStore = await useCountryStore();
                 await countryStore.fetchCountries();
