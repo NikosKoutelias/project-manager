@@ -34,6 +34,26 @@ class UserAuthController extends Controller
         ]);
     }
 
+    public function update(Request $request)
+    {
+        $request->validate([
+        'email' => 'required|string|email',
+        'role' => 'required|in:'.implode(',',  array_keys(Role::ROLES)),
+        'name' => 'required|string',
+        'permissions' => 'required|json'
+    ]);
+
+        $user = User::find($request->id);
+        $user->permissions = $request->permissions;
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => Role::fromArray($request->role),
+        ]);
+        return response('User Updated successfully', 200);
+
+    }
+
     public function login(Request $request)
     {
         $loginUserData = $request->validate([

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserAuthController;
+use App\Models\SubDomains\User;
 use App\Models\ValueObjects\CountryOfOperation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,8 +12,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::get('/users', function (Request $request) {
-        return \App\Models\SubDomains\User::all()->map(function ($user) {
+    Route::put('/user/{id}', [UserAuthController::class, 'update']);
+    Route::get('/users', function () {
+        return User::all()->map(function ($user) {
             return [
                 'id' => $user->id,
                 'name' => $user->name,
