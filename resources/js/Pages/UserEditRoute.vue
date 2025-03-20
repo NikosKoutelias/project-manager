@@ -72,6 +72,14 @@ function submitForm() {
     })
 }
 
+function deleteUser() {
+    axiosClient.delete(`api/user/${route.params.id}`).then((response) => {
+        router.replace({name: 'Users'})
+    }).catch(error => {
+        console.log(error.response);
+    })
+}
+
 </script>
 
 <template>
@@ -173,6 +181,10 @@ function submitForm() {
             <button type="submit"
                     class="rounded-md bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-300 ease-in-out">
                 Save
+            </button>
+            <button type="reset" v-on:click="deleteUser"
+                    class="rounded-md bg-red-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 transition duration-300 ease-in-out">
+                Delete
             </button>
         </div>
     </form>

@@ -13,6 +13,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     Route::put('/user/{id}', [UserAuthController::class, 'update']);
+    Route::delete('/user/{id}', [UserAuthController::class, 'destroy']);
     Route::get('/users', function () {
         return User::all()->map(function ($user) {
             return [
