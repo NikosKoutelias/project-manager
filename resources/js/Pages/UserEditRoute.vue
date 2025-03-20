@@ -1,6 +1,6 @@
 <script setup>
 import {ChevronDownIcon} from '@heroicons/vue/16/solid'
-import {useRoute} from 'vue-router';
+import {RouterLink, useRoute} from 'vue-router';
 import useUserStore from "../store/user.js";
 import router from "../router.js";
 import {reactive, ref} from "vue";
@@ -12,6 +12,11 @@ const route = useRoute();
 const userStore = useUserStore()
 const companyStore = useCompanyStore()
 const projectStore = useProjectStore()
+const user = userStore.user
+
+if (user.role !== 'ADMIN') {
+    router.replace({name: 'Admin'})
+}
 
 const companies = companyStore.companies
 const projects = projectStore.projects
@@ -59,7 +64,6 @@ function submitForm() {
     formData.append('role', data.value.role);
     formData.append('_method', 'put')
     axiosClient.post(`api/user/${route.params.id}`, formData).then((response) => {
-        console.log(response)
         router.replace({name: 'Users'})
 
     }).catch(error => {

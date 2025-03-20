@@ -37,18 +37,26 @@ class UserAuthController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-        'email' => 'required|string|email',
-        'role' => 'required|in:'.implode(',',  array_keys(Role::ROLES)),
-        'name' => 'required|string',
-        'permissions' => 'required|json'
-    ]);
+            'email' => 'required|string|email',
+            'role' => 'required|in:' . implode(',', array_keys(Role::ROLES)),
+            'name' => 'required|string',
+            'description' => 'string',
+            'permissions' => 'json'
+        ]);
+
 
         $user = User::find($request->id);
-        $user->permissions = $request->permissions;
+        if ($request->description) {
+            $permissions = json_decode($user->permissions);
+            $permissions->description = $request->description;
+            $user->permissions = json_encode($permissions);
+        } else {
+            $user->permissions = $request->permissions;
+        }
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => Role::fromArray($request->role),
+            'role' => Role::fromArray($request->role) ?? '',
         ]);
         return response('User Updated successfully', 200);
 
