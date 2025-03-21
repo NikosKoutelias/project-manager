@@ -22,7 +22,7 @@ const companies = companyStore.companies
 const projects = projectStore.projects
 
 const users = reactive(userStore.users)
-const targetUser = users.map((user) => {
+const targetUser = users.filter((user) => {
     if (user.id === route.params.id) {
         return user
     }
@@ -45,7 +45,7 @@ const data = ref({
     email: targetUser[0].email,
     name: targetUser[0].name,
     role: targetUser[0].role,
-    description: JSON.parse(targetUser[0].permissions).description,
+    description: JSON.parse(targetUser[0].permissions)?.description ?? '',
     companies: [],
     projects: [],
 

@@ -3,7 +3,6 @@
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserAuthController;
-use App\Models\SubDomains\User;
 use App\Models\ValueObjects\CountryOfOperation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,17 +13,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::put('/user/{id}', [UserAuthController::class, 'update']);
     Route::delete('/user/{id}', [UserAuthController::class, 'destroy']);
-    Route::get('/users', function () {
-        return User::all()->map(function ($user) {
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-                'permissions' => $user->permissions,
-            ];
-        });
-    });
+    Route::get('/users', [UserAuthController::class, 'index']);
+    Route::post('/user', [UserAuthController::class, 'create']);
 
     Route::apiResource('/company', CompanyController::class);
     Route::apiResource('/project', ProjectController::class);

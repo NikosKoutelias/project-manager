@@ -23,6 +23,7 @@ const routes = [
             {path: "/admin/settings", name: 'Settings', component: () => import("./Pages/SettingsRoute.vue")},
             {path: "/admin/profile", name: 'Profile', component: () => import("./Pages/ProfileRoute.vue")},
             {path: "/admin/user/:id", name: 'UserEdit', component: () => import("./Pages/UserEditRoute.vue")},
+            {path: "/admin/company/:id", name: 'CompanyEdit', component: () => import("./Pages/CompanyEditRoute.vue")},
         ],
         beforeEnter: async (to, from, next) => {
             try {

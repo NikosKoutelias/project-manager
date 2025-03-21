@@ -2,6 +2,8 @@
 
 import useUserStore from "../store/user.js";
 import router from "../router.js";
+import CreateModal from "../Widgets/CreateModal.vue";
+import {ref} from "vue";
 
 const userStore = useUserStore()
 const users = userStore.users
@@ -12,17 +14,34 @@ if (user.role !== 'ADMIN') {
     router.replace({name: 'Admin'})
 }
 
+const roles = ref([
+        {name: 'ADMIN', value: 'ADMIN'},
+        {name: 'USER', value: 'USER'},
+    ]
+)
+
 function reload() {
     window.location.reload()
+}
+
+const isModalOpen = ref(false)
+
+function toggle() {
+    isModalOpen.value = !isModalOpen.value;
 }
 
 </script>
 
 <template>
-    <button type="text" class="float-end mb-2" v-on:click="reload">
-        <svg fill="#2c778f" height="30px" width="50px" version="1.1" id="Capa_1"
-             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-             viewBox="0 0 489.698 489.698" xml:space="preserve">
+    <div class="container h-10 mb-2">
+        <button @click="toggle"
+                class="rounded-md float-end px-3 py-2 text-sm font-semibold text-white shadow-xs bg-indigo-400 hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-300 ease-in-out">
+            Create User
+        </button>
+        <button type="text" class="float-end mt-1" v-on:click="reload">
+            <svg fill="#2c778f" height="30px" width="50px" version="1.1" id="Capa_1"
+                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                 viewBox="0 0 489.698 489.698" xml:space="preserve">
                         <g>
                             <g>
                                 <path d="M468.999,227.774c-11.4,0-20.8,8.3-20.8,19.8c-1,74.9-44.2,142.6-110.3,178.9c-99.6,54.7-216,5.6-260.6-61l62.9,13.1
@@ -36,7 +55,9 @@ function reload() {
                             </g>
                         </g>
                     </svg>
-    </button>
+        </button>
+    </div>
+    <CreateModal v-if="isModalOpen" :label="'User'" :roles="roles" :email="true" :destination="$route.name"></CreateModal>
     <div
         class="relative overflow-x-auto w-full shadow-md sm:rounded-lg hover:drop-shadow-xl transition duration-300 ease-in-out">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

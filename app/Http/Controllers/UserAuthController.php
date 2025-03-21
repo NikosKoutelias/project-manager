@@ -7,9 +7,40 @@ use App\Models\ValueObjects\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules;
 
 class UserAuthController extends Controller
 {
+    public function index()
+    {
+        return User::all()->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+                'permissions' => $user->permissions,
+            ];
+        });
+    }
+
+    public function create(Request $request){
+
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users',
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => Role::fromArray(strtoupper(Role::ROLES[$request->role])),
+            'permissions' => 'json'
+        ]);
+    }
+
     public function register(Request $request)
     {
 
@@ -56,7 +87,7 @@ class UserAuthController extends Controller
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => Role::fromArray($request->role) ?? '',
+            'role' => Role::fromArray($request->role)
         ]);
         return response('User Updated successfully', 200);
 

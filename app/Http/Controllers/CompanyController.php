@@ -48,7 +48,18 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'country_of_operation' => 'required|in:' . implode(',', array_keys(CountryOfOperation::COUNTRIES)),
+            ]);
+
+        $company->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'country_of_operation' => CountryOfOperation::fromArray($request->country_of_operation)
+        ]);
+        return response('Country Updated successfully', 200);
     }
 
     /**
