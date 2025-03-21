@@ -24,6 +24,12 @@ const routes = [
             {path: "/admin/profile", name: 'Profile', component: () => import("./Pages/ProfileRoute.vue")},
             {path: "/admin/user/:id", name: 'UserEdit', component: () => import("./Pages/UserEditRoute.vue")},
             {path: "/admin/company/:id", name: 'CompanyEdit', component: () => import("./Pages/CompanyEditRoute.vue")},
+            {path: "/admin/project/:id", name: 'ProjectEdit', component: () => import("./Pages/ProjectEditRoute.vue")},
+            {
+                path: "/change-password",
+                name: "ChangePassword",
+                component: () => import("./Pages/ChangePasswordRoute.vue")
+            },
         ],
         beforeEnter: async (to, from, next) => {
             try {

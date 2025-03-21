@@ -52,7 +52,7 @@ function reload() {
     <CreateModal v-if="isModalOpen" :label="'Project'" :companies="companies" :destination="$route.name"></CreateModal>
     <section>
         <div class="grid">
-            <div class="card bg-gray-50" v-for="project in projects">
+            <router-link  :to="`/admin/project/${project.id}`" class="card bg-gray-50" v-for="project in projects">
                 <span class="icon">
                   <svg
                       viewBox="0 0 100 120"
@@ -93,7 +93,7 @@ function reload() {
                     <div class="line line-2"></div>
                     <div class="line line-3"></div>
                 </div>
-            </div>
+            </router-link>
         </div>
     </section>
 </template>

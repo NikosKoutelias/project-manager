@@ -17,6 +17,7 @@ class ProjectController extends Controller
                 'id' => $project->id,
                 'name' => $project->name,
                 'description' => $project->description,
+                'company_id' => $project->company_id,
             ];
         });
     }
@@ -38,18 +39,29 @@ class ProjectController extends Controller
             'company_id' => $requestData['company'],
         ]);
 
-
-
         return response()->json(['message' => 'Project created successfully.']);
 
-}
+    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:companies',
+            'description' => 'required|string',
+            'company_id' => 'required',
+        ]);
+        $project->company_id = $request->company_id;
+
+        $project->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'company_id' => $request->company_id,
+        ]);
+
+        return response('Project Updated successfully', 200);
     }
 
     /**
