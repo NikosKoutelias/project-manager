@@ -22,9 +22,9 @@ const routes = [
             {path: "/admin/reports", name: 'Reports', component: () => import("./Pages/ReportsRoute.vue")},
             {path: "/admin/settings", name: 'Settings', component: () => import("./Pages/SettingsRoute.vue")},
             {path: "/admin/profile", name: 'Profile', component: () => import("./Pages/ProfileRoute.vue")},
-            {path: "/admin/user/:id", name: 'UserEdit', component: () => import("./Pages/UserEditRoute.vue")},
-            {path: "/admin/company/:id", name: 'CompanyEdit', component: () => import("./Pages/CompanyEditRoute.vue")},
-            {path: "/admin/project/:id", name: 'ProjectEdit', component: () => import("./Pages/ProjectEditRoute.vue")},
+            {path: "/admin/user/:id", name: 'User', component: () => import("./Pages/UserEditRoute.vue")},
+            {path: "/admin/company/:id", name: 'Company', component: () => import("./Pages/CompanyEditRoute.vue")},
+            {path: "/admin/project/:id", name: 'Project', component: () => import("./Pages/ProjectEditRoute.vue")},
             {
                 path: "/change-password",
                 name: "ChangePassword",

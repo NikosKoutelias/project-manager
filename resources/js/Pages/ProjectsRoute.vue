@@ -4,12 +4,15 @@ import {ref} from "vue";
 import CreateModal from "../Widgets/CreateModal.vue";
 import useProjectStore from "../store/projects.js";
 import useCompanyStore from "../store/companies.js";
+import useUserStore from "../store/user.js";
 
 const projectStore = useProjectStore()
 const companyStore = useCompanyStore()
+const userStore = useUserStore()
 
 const projects = projectStore.projects
 const companies = companyStore.companies
+const user = userStore.user
 
 const isModalOpen = ref(false)
 function toggle() {
@@ -25,7 +28,7 @@ function reload() {
 <template>
 
     <div class="container h-10 mb-2">
-    <button @click="toggle"
+    <button @click="toggle" v-if="user.role === 'ADMIN'"
             class="rounded-md float-end px-3 py-2 text-sm font-semibold text-white shadow-xs bg-indigo-400 hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-300 ease-in-out">
         Create Project
     </button>

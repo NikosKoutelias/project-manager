@@ -4,12 +4,15 @@ import {ref} from "vue";
 import CreateModal from "../Widgets/CreateModal.vue";
 import useCountryStore from "../store/countries.js";
 import useCompanyStore from "../store/companies.js";
+import useUserStore from "../store/user.js";
 
 const countryStore = useCountryStore()
 const companyStore = useCompanyStore()
+const userStore = useUserStore()
 
 const countries = countryStore.countries
 const companies = companyStore.companies
+const user = userStore.user
 
 const isModalOpen = ref(false)
 function toggle() {
@@ -23,7 +26,7 @@ function reload() {
 
 <template>
     <div class="container h-10 mb-2">
-    <button @click="toggle"
+    <button @click="toggle" v-if="user.role === 'ADMIN'"
             class="rounded-md float-end bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-300 ease-in-out">
         Create Company
     </button>
