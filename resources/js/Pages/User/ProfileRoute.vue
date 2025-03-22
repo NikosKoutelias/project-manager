@@ -2,10 +2,10 @@
 import {UserCircleIcon} from '@heroicons/vue/24/solid'
 import {ChevronDownIcon} from '@heroicons/vue/16/solid'
 import {RouterLink, useRoute} from 'vue-router';
-import useUserStore from "../store/user.js";
-import router from "../router.js";
+import useUserStore from "../../store/user.js";
+import router from "../../router.js";
 import {ref} from "vue";
-import axiosClient from "../axios.js";
+import axiosClient from "../../axios.js";
 
 const route = useRoute();
 const userStore = useUserStore()
@@ -39,7 +39,7 @@ function submitForm() {
     formData.append('id', user.id);
     formData.append('_method', 'put')
     axiosClient.post(`api/user/${route.params.id}`, formData).then((response) => {
-        router.replace({name: 'Users'})
+        router.replace({name: 'Administration'})
 
     }).catch(error => {
         console.log(error.response);
@@ -153,7 +153,7 @@ function reload() {
         </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
-            <router-link :to="{name: 'Dashboard'}"
+            <router-link :to="{name: 'Administration'}"
                          class="text-sm font-semibold bg-gray-200 rounded-md hover:bg-gray-300 px-3 py-2 transition duration-300 ease-in-out text-gray-900">
                 Back
             </router-link>

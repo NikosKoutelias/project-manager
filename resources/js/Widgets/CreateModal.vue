@@ -174,7 +174,7 @@ function submitForm() {
                                                         </div>
                                                         <div class="sm:col-span-2 sm:col-start-1"
                                                              v-if="props.countries">
-                                                            <label for="city"
+                                                            <label for="country_of_operation"
                                                                    class="block text-sm/6 font-medium text-gray-900">Country
                                                                 of operation</label>
                                                             <div class="mt-2 grid grid-cols-1">
@@ -200,12 +200,12 @@ function submitForm() {
                                                         </div>
                                                         <div class="sm:col-span-2 sm:col-start-1"
                                                              v-if="props.companies">
-                                                            <label for="city"
+                                                            <label for="company"
                                                                    class="block text-sm/6 font-medium text-gray-900">Company
                                                                 Related</label>
                                                             <div class="mt-2 grid grid-cols-1">
-                                                                <select id="country_of_operation"
-                                                                        name="country_of_operation"
+                                                                <select id="company"
+                                                                        name="company"
                                                                         v-model="data.company"
                                                                         class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                                                     <option disabled value="">Select a company</option>
@@ -224,11 +224,11 @@ function submitForm() {
                                                         </div>
                                                         <div class="sm:col-span-2 sm:col-start-1"
                                                              v-if="props.roles">
-                                                            <label for="city"
+                                                            <label for="role"
                                                                    class="block text-sm/6 font-medium text-gray-900">Role</label>
                                                             <div class="mt-2 grid grid-cols-1">
-                                                                <select id="country_of_operation"
-                                                                        name="country_of_operation"
+                                                                <select id="role"
+                                                                        name="role"
                                                                         v-model="data.role"
                                                                         class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                                                     <option disabled value="">Select a User Role

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubDomains\Project;
+use App\Models\SubDomains\User;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -69,6 +70,22 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return response(null, 204);
+    }
+
+    public function perUser(Request $request)
+    {
+        $user = User::find($request->userId);
+        $project_ids_assigned = json_decode($user->permissions)->projects;
+        return Project::whereIn('id', $project_ids_assigned)->get()->map(function ($project) {
+            return [
+                'id' => $project->id,
+                'name' => $project->name,
+                'description' => $project->description,
+                'company_id' => $project->company_id,
+            ];
+        });
     }
 }

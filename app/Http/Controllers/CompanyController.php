@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Domain\Company;
+use App\Models\SubDomains\User;
 use App\Models\ValueObjects\CountryOfOperation;
 use Illuminate\Http\Request;
 
@@ -70,5 +71,19 @@ class CompanyController extends Controller
         $company->delete();
 
         return response(null, 204);
+    }
+
+    public function perUser(Request $request)
+    {
+        $user = User::find($request->userId);
+        $company_ids_assigned = json_decode($user->permissions)->companies;
+        return Company::whereIn('id', $company_ids_assigned)->get()->map(function ($company) {
+            return [
+                'id' => $company->id,
+                'name' => $company->name,
+                'description' => $company->description,
+                'country_of_operation' => $company->country_of_operation,
+            ];
+        });
     }
 }

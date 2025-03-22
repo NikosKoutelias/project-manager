@@ -13,23 +13,16 @@ const routes = [
     {
         path: "/admin",
         name: "Admin",
-        component: () => import("./Pages/AdminRoute.vue"),
+        component: () => import("./Pages/Admin/AdminRoute.vue"),
         children: [
-            {path: "/admin/dashboard", name: 'Dashboard', component: () => import("./Pages/DashboardRoute.vue")},
-            {path: "/admin/companies", name: 'Companies', component: () => import("./Pages/CompaniesRoute.vue")},
-            {path: "/admin/projects", name: 'Projects', component: () => import("./Pages/ProjectsRoute.vue")},
-            {path: "/admin/users", name: 'Users', component: () => import("./Pages/UsersRoute.vue")},
-            {path: "/admin/reports", name: 'Reports', component: () => import("./Pages/ReportsRoute.vue")},
-            {path: "/admin/settings", name: 'Settings', component: () => import("./Pages/SettingsRoute.vue")},
-            {path: "/admin/profile", name: 'Profile', component: () => import("./Pages/ProfileRoute.vue")},
-            {path: "/admin/user/:id", name: 'User', component: () => import("./Pages/UserEditRoute.vue")},
-            {path: "/admin/company/:id", name: 'Company', component: () => import("./Pages/CompanyEditRoute.vue")},
-            {path: "/admin/project/:id", name: 'Project', component: () => import("./Pages/ProjectEditRoute.vue")},
-            {
-                path: "/change-password",
-                name: "ChangePassword",
-                component: () => import("./Pages/ChangePasswordRoute.vue")
-            },
+            {path: "/admin/dashboard", name: 'Dashboard', component: () => import("./Pages/Admin/DashboardRoute.vue")},
+            {path: "/admin/companies", name: 'Companies', component: () => import("./Pages/Admin/CompaniesRoute.vue")},
+            {path: "/admin/projects", name: 'Projects', component: () => import("./Pages/Admin/ProjectsRoute.vue")},
+            {path: "/admin/users", name: 'Users', component: () => import("./Pages/Admin/UsersRoute.vue")},
+            {path: "/admin/reports", name: 'Reports', component: () => import("./Pages/Admin/ReportsRoute.vue")},
+            {path: "/admin/user/:id", name: 'User', component: () => import("./Pages/Admin/UserEditRoute.vue")},
+            {path: "/admin/company/:id", name: 'Company', component: () => import("./Pages/Admin/CompanyEditRoute.vue")},
+            {path: "/admin/project/:id", name: 'Project', component: () => import("./Pages/Admin/ProjectEditRoute.vue")},
         ],
         beforeEnter: async (to, from, next) => {
             try {
@@ -56,6 +49,38 @@ const routes = [
         path: "/login",
         name: "Login",
         component: () => import("./Pages/LoginRoute.vue"),
+    },
+    {
+        path: "/administration",
+        name: "Administration",
+        component: () => import("./Pages/User/UserLanding.vue"),
+        children: [
+            {path: "/administration/companies", name: 'User Companies', component: () => import("./Pages/User/CompaniesRoute.vue")},
+            {path: "/administration/projects", name: 'User Projects', component: () => import("./Pages/User/ProjectsRoute.vue")},
+            {path: "/administration/reports", name: 'User Reports', component: () => import("./Pages/User/ReportsRoute.vue")},
+            {path: "/user/profile", name: 'Profile', component: () => import("./Pages/User/ProfileRoute.vue")},
+            {path: "/user/settings", name: 'Settings', component: () => import("./Pages/SettingsRoute.vue")},
+            {path: "/change-password", name: "ChangePassword", component: () => import("./Pages/User/ChangePasswordRoute.vue")},
+        ],
+        beforeEnter: async (to, from, next) => {
+            try {
+                const userStore = await useUserStore();
+                await userStore.fetchUser();
+
+                const countryStore = await useCountryStore();
+                await countryStore.fetchCountries();
+
+                const companyStore = await useCompanyStore();
+                await companyStore.fetchCompaniesForUser(userStore.user.id);
+
+                const projectStore = await useProjectStore()
+                await projectStore.fetchProjectsForUser(userStore.user.id);
+
+                next();
+            } catch (err) {
+                next(false); // Cancel navigation if data fetching fails
+            }
+        },
     },
     {
         path: "/register",

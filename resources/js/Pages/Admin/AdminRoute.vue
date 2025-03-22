@@ -1,13 +1,17 @@
 <script setup>
 import {Disclosure, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
-import axiosClient from "../axios.js";
-import router from "../router.js";
-import useUserStore from "../store/user.js";
+import axiosClient from "../../axios.js";
+import router from "../../router.js";
+import useUserStore from "../../store/user.js";
 import {computed} from "vue";
 
 const userStore = useUserStore()
 
 const user = computed(() => userStore.user)
+
+if (user.value.role !== 'ADMIN') {
+    router.replace({name: 'Administration'})
+}
 
 const userNavigation = [
     {name: 'Your Profile', to: {name: 'Profile'}},
@@ -35,11 +39,11 @@ function logout() {
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-16 items-center justify-between">
                     <div class="flex items-center">
-                        <div class="shrink-0">
+                        <router-link :to="{name: 'Administration'}" class="shrink-0">
                             <img class="size-8 scale-200"
                                  src="https://cdn-icons-png.flaticon.com/512/11494/11494548.png"
                                  alt="Your Company"/>
-                        </div>
+                        </router-link>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
                                 <router-link v-for="item in navigation" :key="item.name" :to="item.to"

@@ -35,8 +35,8 @@ section.toggle .grid * {
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(3, 300px);
-    grid-gap: 32px;
+    grid-template-columns: repeat(3, 280px);
+    grid-gap: 15px;
     position: relative;
     z-index: 1;
 }
@@ -442,7 +442,7 @@ html {
 }
 
 section {
-    min-height: 60vh;
+    min-height: 70vh;
     display: flex;
     justify-content: center;
     align-items: center;

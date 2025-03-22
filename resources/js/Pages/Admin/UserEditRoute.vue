@@ -1,19 +1,18 @@
 <script setup>
 import {ChevronDownIcon} from '@heroicons/vue/16/solid'
 import {RouterLink, useRoute} from 'vue-router';
-import useUserStore from "../store/user.js";
-import router from "../router.js";
+import useUserStore from "../../store/user.js";
+import router from "../../router.js";
 import {reactive, ref} from "vue";
-import useCompanyStore from "../store/companies.js";
-import useProjectStore from "../store/projects.js";
-import axiosClient from "../axios.js";
+import useCompanyStore from "../../store/companies.js";
+import useProjectStore from "../../store/projects.js";
+import axiosClient from "../../axios.js";
 
 const route = useRoute();
 const userStore = useUserStore()
 const companyStore = useCompanyStore()
 const projectStore = useProjectStore()
 const user = userStore.user
-
 if (user.role !== 'ADMIN') {
     router.replace({name: 'Admin'})
 }
@@ -29,8 +28,8 @@ const targetUser = users.filter((user) => {
 })
 
 const options = ref([
-    {name: 'ADMIN', value: 'ADMIN'},
-    {name: 'USER', value: 'USER'},
+        {name: 'ADMIN', value: 'ADMIN'},
+        {name: 'USER', value: 'USER'},
     ]
 )
 const errors = ref({
@@ -56,7 +55,6 @@ function submitForm() {
     permissions['companies'] = data.value.companies
     permissions['projects'] = data.value.projects
     permissions['description'] = data.value.description
-
     const formData = new FormData();
     formData.append('name', data.value.name);
     formData.append('permissions', JSON.stringify(permissions));
@@ -78,6 +76,22 @@ function deleteUser() {
     }).catch(error => {
         console.log(error.response);
     })
+}
+
+const availProjects = ref()
+
+function fetchProjects(e) {
+    const results = []
+     projects.filter((project) => {
+        return data.value.companies.filter((company) => {
+
+            if (project.company_id === company) {
+                results.push(project)
+            }
+        })
+    })
+    availProjects.value = results;
+
 }
 
 </script>
@@ -106,7 +120,8 @@ function deleteUser() {
                         <div class="mt-2 grid grid-cols-1">
                             <select id="role" name="role" v-model="data.role"
                                     class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                <option v-for="option in options" :selected="option.name === data.role" :value="option.value">
+                                <option v-for="option in options" :selected="option.name === data.role"
+                                        :value="option.value">
                                     {{ option.name }}
                                 </option>
                             </select>
@@ -138,34 +153,36 @@ function deleteUser() {
                 </div>
             </div>
         </div>
-        <div class="border-b border-gray-900/10 pb-12">
+        <div class="border-b border-gray-900/10 pb-12" v-if="targetUser[0].role !== 'ADMIN'">
             <h2 class="text-base/7 font-semibold text-gray-900 mt-5">Permissions</h2>
             <p class="mt-1 text-sm/6 text-gray-600">Which Companies or Projects is eligible to.</p>
             <div class="mt-10 grid gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div class="sm:col-span-3">
+                <div class="sm:col-span-2">
+                    <label class="text-sm/6 font-semibold text-gray-900">By Company</label>
+                    <div class="mt-2 col-span-3 w-full">
+                        <select id="country_of_operation" multiple style="height: 200px" v-model="data.companies"
+                                v-on:change="fetchProjects"
+                                name="country_of_operation"
+                                class="appearance-none w-5/6 rounded-md py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6">
+                            <option disabled value="" class="mb-1.5 border-b-1">Select Companies</option>
+                            <option v-for="company in companies"
+                                    :value="company.id">
+                                {{ company.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-2">
                     <label class="text-sm/6 font-semibold text-gray-900">By Project</label>
                     <div class="mt-2 col-span-3 w-full">
                         <select id="projects" multiple style="height: 200px" v-model="data.projects"
                                 name="projects"
                                 class="appearance-none rounded-md py-1.5 w-5/6 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6">
                             <option disabled value="" class="mb-1.5 border-b-1">Select Projects</option>
-                            <option v-for="project in projects"
-                                    :value="project.name">
+                            <option v-for="project in availProjects"
+                                    :value="project.id">
                                 {{ project.name }}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="sm:col-span-3">
-                    <label class="text-sm/6 font-semibold text-gray-900">By Company</label>
-                    <div class="mt-2 col-span-3 w-full">
-                        <select id="country_of_operation" multiple style="height: 200px" v-model="data.companies"
-                                name="country_of_operation"
-                                class="appearance-none w-5/6 rounded-md py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6">
-                            <option disabled value="" class="mb-1.5 border-b-1">Select Companies</option>
-                            <option v-for="company in companies"
-                                    :value="company.name">
-                                {{ company.name }}
                             </option>
                         </select>
                     </div>
@@ -174,7 +191,7 @@ function deleteUser() {
         </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
-            <router-link :to="{name: 'Dashboard'}"
+            <router-link :to="{name: 'Users'}"
                          class="text-sm font-semibold bg-gray-200 rounded-md hover:bg-gray-300 px-3 py-2 transition duration-300 ease-in-out text-gray-900">
                 Back
             </router-link>

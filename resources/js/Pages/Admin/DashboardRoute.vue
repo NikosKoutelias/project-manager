@@ -1,7 +1,7 @@
 <script setup>
-import useUserStore from "../store/user.js";
-import useCompanyStore from "../store/companies.js";
-import useProjectStore from "../store/projects.js";
+import useUserStore from "../../store/user.js";
+import useCompanyStore from "../../store/companies.js";
+import useProjectStore from "../../store/projects.js";
 
 const userStore = useUserStore()
 const companyStore = useCompanyStore()

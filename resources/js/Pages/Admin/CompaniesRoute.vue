@@ -1,10 +1,10 @@
 <script setup>
 
 import {ref} from "vue";
-import CreateModal from "../Widgets/CreateModal.vue";
-import useCountryStore from "../store/countries.js";
-import useCompanyStore from "../store/companies.js";
-import useUserStore from "../store/user.js";
+import CreateModal from "../../Widgets/CreateModal.vue";
+import useCountryStore from "../../store/countries.js";
+import useCompanyStore from "../../store/companies.js";
+import useUserStore from "../../store/user.js";
 
 const countryStore = useCountryStore()
 const companyStore = useCompanyStore()
@@ -52,7 +52,7 @@ function reload() {
     <CreateModal v-if="isModalOpen" :label="'Company'" :countries="countries" :destination="$route.name"></CreateModal>
     <section>
         <div class="grid">
-            <router-link  :to="`/admin/company/${company.id}`" class="card bg-gray-50" v-for="company in companies">
+            <router-link  :to="`/admin/company/${company.id}`" class="card bg-gray-50 lg:col-span-1 md:col-span-3" v-for="company in companies">
                 <span class="icon">
                   <svg
                       viewBox="0 0 50 50"
@@ -100,5 +100,5 @@ function reload() {
 
 
 <style scoped>
-@import "../../css/data_display.css";
+@import "../../../css/data_display.css";
 </style>

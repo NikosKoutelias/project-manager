@@ -3,6 +3,7 @@ import axiosClient from "../axios.js";
 import {ref} from "vue";
 import router from "../router.js";
 
+
 const data = ref({
     email: "",
     password: "",
@@ -13,7 +14,7 @@ const errorMessage = ref('')
 function submitForm() {
     axiosClient.get('/sanctum/crsf-cookie').then((response) => {
         axiosClient.post("/login", data.value).then((response) => {
-            router.push({name: 'Dashboard'});
+            router.push({name: 'Administration'});
         }).catch(error => {
             console.log(error.response);
             errorMessage.value = error.response.data.message;

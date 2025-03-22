@@ -1,8 +1,8 @@
 <script setup>
 
 import {ref} from "vue";
-import axiosClient from "../axios.js";
-import router from "../router.js";
+import axiosClient from "../../axios.js";
+import router from "../../router.js";
 
 const data = ref({
     current_password: "",
@@ -79,7 +79,7 @@ function submitForm() {
                     </button>
                 </div>
                 <div>
-                    <router-link :to="{name: 'Dashboard'}"
+                    <router-link :to="{name: 'Profile'}"
                             class="flex w-full justify-center rounded-md bg-gray-400 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition duration-300 ease-in-out ">
                         Back to Dashboard
                     </router-link>

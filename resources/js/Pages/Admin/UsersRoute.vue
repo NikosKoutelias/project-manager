@@ -1,18 +1,19 @@
 <script setup>
 
-import useUserStore from "../store/user.js";
-import router from "../router.js";
-import CreateModal from "../Widgets/CreateModal.vue";
+import useUserStore from "../../store/user.js";
+import CreateModal from "../../Widgets/CreateModal.vue";
 import {ref} from "vue";
+import useCompanyStore from "../../store/companies.js";
+import useProjectStore from "../../store/projects.js";
 
 const userStore = useUserStore()
+const companyStore = useCompanyStore()
+const projectStore = useProjectStore()
+
+const companies = companyStore.companies
+const projects = projectStore.projects
 const users = userStore.users
-const user = userStore.user
 
-
-if (user.role !== 'ADMIN') {
-    router.replace({name: 'Admin'})
-}
 
 const roles = ref([
         {name: 'ADMIN', value: 'ADMIN'},
@@ -30,6 +31,18 @@ function toggle() {
     isModalOpen.value = !isModalOpen.value;
 }
 
+function mapIDs(ids,elements) {
+    let nameS = []
+    ids.filter(id => {
+        const found = elements.find(i => i.id === id)?.name
+        if(found){
+            nameS.push(found)
+        }
+    })
+
+    return nameS
+}
+
 </script>
 
 <template>
@@ -38,7 +51,7 @@ function toggle() {
                 class="rounded-md float-end px-3 py-2 text-sm font-semibold text-white shadow-xs bg-indigo-400 hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-300 ease-in-out">
             Create User
         </button>
-        <button type="text" class="float-end mt-1" v-on:click="reload">
+        <button type="reset" class="float-end mt-1" v-on:click="reload">
             <svg fill="#2c778f" height="30px" width="50px" version="1.1" id="Capa_1"
                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                  viewBox="0 0 489.698 489.698" xml:space="preserve">
@@ -57,7 +70,8 @@ function toggle() {
                     </svg>
         </button>
     </div>
-    <CreateModal v-if="isModalOpen" :label="'User'" :roles="roles" :email="true" :destination="$route.name"></CreateModal>
+    <CreateModal v-if="isModalOpen" :label="'User'" :roles="roles" :email="true"
+                 :destination="$route.name"></CreateModal>
     <div
         class="relative overflow-x-auto w-full shadow-md sm:rounded-lg hover:drop-shadow-xl transition duration-300 ease-in-out">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -73,10 +87,10 @@ function toggle() {
                     Role
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Projects
+                    Companies
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Companies
+                    Projects
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Action
@@ -96,11 +110,12 @@ function toggle() {
                     {{ user.role }}
                 </td>
                 <td class="px-6 py-4">
-                    {{ user.role !== 'ADMIN' ? JSON.parse(user.permissions).projects : 'All' }}
+                    {{ user.role !== 'ADMIN' ? mapIDs(JSON.parse(user.permissions).companies,companies) : 'All' }}
                 </td>
                 <td class="px-6 py-4">
-                    {{ user.role !== 'ADMIN' ? JSON.parse(user.permissions).companies : 'All' }}
+                    {{ user.role !== 'ADMIN' ?  mapIDs(JSON.parse(user.permissions).projects,projects) : 'All' }}
                 </td>
+
                 <td class="px-6 py-4">
                     <router-link :to="`/admin/user/${user.id}`"
                                  class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit
