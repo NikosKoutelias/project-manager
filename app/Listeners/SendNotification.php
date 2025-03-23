@@ -24,9 +24,8 @@ class SendNotification
      */
     public function handle(RegisterUserEvent $event): void
     {
-
-        User::where('role','admin')->each(function ($user) use ($event) {
-            $user->notify(new NewAvailableUser('System',$event->user));
+        User::where('role', 'admin')->each(function ($user) use ($event) {
+            $user->notify(new NewAvailableUser('System', $event->user));
         });
 
     }

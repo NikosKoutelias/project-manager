@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SubDomains\Project;
 use App\Models\SubDomains\User;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -33,12 +34,28 @@ class ProjectController extends Controller
             'description' => 'required',
             'company' => 'required',
         ]);
-
-        Project::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'company_id' => $request->company,
-        ]);
+        try {
+            Project::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'company_id' => $request->company,
+            ]);
+        } catch (UniqueConstraintViolationException $e) {
+            if ($e->getCode() == 23000) {
+                return response([
+                    'errors' => [
+                        'name' => [
+                            'Project with same company already exists',
+                        ]
+                    ]
+                ], 422);
+            } else {
+                return response()->json([
+                    'error' => 'Generic error',
+                    'error_description' => $e->getMessage(),
+                ]);
+            }
+        }
 
         return response()->json(['message' => 'Project created successfully.']);
 
@@ -54,13 +71,28 @@ class ProjectController extends Controller
             'description' => 'required|string',
             'company_id' => 'required',
         ]);
-
-        $project->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'company_id' => $request->company_id,
-        ]);
-
+        try {
+            $project->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'company_id' => $request->company_id,
+            ]);
+        } catch (UniqueConstraintViolationException $e) {
+            if ($e->getCode() == 23000) {
+                return response([
+                    'errors' => [
+                        'name' => [
+                            'Project with same company already exists',
+                        ]
+                    ]
+                ], 422);
+            } else {
+                return response()->json([
+                    'error' => 'Generic error',
+                    'error_description' => $e->getMessage(),
+                ]);
+            }
+        }
         return response('Project Updated successfully', 200);
     }
 
@@ -76,7 +108,7 @@ class ProjectController extends Controller
 
     public function perUser(Request $request)
     {
-        $user = User::find($request->userId);
+        $user = User::findOrFail($request->userId);
         $project_ids_assigned = json_decode($user->permissions)->projects;
         return Project::whereIn('id', $project_ids_assigned)->get()->map(function ($project) {
             return [

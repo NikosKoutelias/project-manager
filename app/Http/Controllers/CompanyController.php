@@ -75,7 +75,7 @@ class CompanyController extends Controller
 
     public function perUser(Request $request)
     {
-        $user = User::find($request->userId);
+        $user = User::findOrFail($request->userId);
         $company_ids_assigned = json_decode($user->permissions)->companies;
         return Company::whereIn('id', $company_ids_assigned)->get()->map(function ($company) {
             return [

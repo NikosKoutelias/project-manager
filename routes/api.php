@@ -16,8 +16,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserAuthController::class, 'index']);
     Route::post('/user', [UserAuthController::class, 'create']);
 
-    Route::get('/companies/{userId}', [CompanyController::class, 'perUser']);
-    Route::get('/projects/{userId}', [ProjectController::class, 'perUser']);
+    Route::get('/companies/{userId}', [CompanyController::class, 'perUser'])->name('companies.perUser');
+    Route::get('/projects/{userId}', [ProjectController::class, 'perUser'])->name('projects.perUser');
     Route::apiResource('/company', CompanyController::class);
     Route::apiResource('/project', ProjectController::class);
     Route::get('/countries', function () {

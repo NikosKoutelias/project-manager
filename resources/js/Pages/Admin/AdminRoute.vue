@@ -9,7 +9,6 @@ const userStore = useUserStore()
 
 const user = computed(() => userStore.user)
 
-console.log(user.role)
 if (user.value.role !== 'ADMIN') {
     router.replace({name: 'Administration'})
 }

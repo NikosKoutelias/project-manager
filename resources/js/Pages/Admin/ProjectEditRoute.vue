@@ -105,6 +105,9 @@ function reload() {
                                 focus:outline-none sm:text-sm/6"/>
                             </div>
                         </div>
+                        <p class="text-red-500 text-sm">
+                            {{ errors.name ? errors.name[0] : '' }}
+                        </p>
                     </div>
 
                     <div class="sm:col-span-3">
@@ -131,6 +134,9 @@ function reload() {
                                           class="block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"/>
                             </div>
                         </div>
+                        <p class="text-red-500 text-sm">
+                            {{ errors.description ? errors.description[0] : '' }}
+                        </p>
                     </div>
                 </div>
             </div>
