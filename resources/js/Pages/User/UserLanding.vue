@@ -34,11 +34,11 @@ function logout() {
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 items-center justify-between">
                         <div class="flex items-center">
-                            <div class="shrink-0">
+                            <router-link :to="{name: 'Administration'}" class="shrink-0">
                                 <img class="size-8 scale-200"
                                      src="https://cdn-icons-png.flaticon.com/512/11494/11494548.png"
                                      alt="Your Company"/>
-                            </div>
+                            </router-link>
                             <div class="md:block">
                                 <div class="ml-10 flex items-baseline space-x-4">
                                     <router-link v-for="item in navigation" :key="item.name" :to="item.to"

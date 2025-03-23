@@ -38,7 +38,7 @@ function submitForm() {
     formData.append('role', user.role);
     formData.append('id', user.id);
     formData.append('_method', 'put')
-    axiosClient.post(`api/user/${route.params.id}`, formData).then((response) => {
+    axiosClient.post(`api/user/${user.id}`, formData).then((response) => {
         router.replace({name: 'Administration'})
 
     }).catch(error => {

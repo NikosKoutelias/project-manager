@@ -31,6 +31,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'permissions',
     ];
 
     /**
@@ -42,7 +43,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    
+
 
     public static function boot()
     {

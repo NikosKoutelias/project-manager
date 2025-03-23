@@ -20,7 +20,7 @@ const errors = ref({
 function submitForm() {
     axiosClient.get('/sanctum/crsf-cookie').then((response) => {
         axiosClient.post("/register", data.value).then((response) => {
-            router.push({name: 'Admin'});
+            router.push({name: 'Administration'});
         })
             .catch((error) => {
                 errors.value = error.response.data.errors;

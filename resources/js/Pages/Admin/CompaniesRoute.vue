@@ -30,7 +30,7 @@ function reload() {
             class="rounded-md float-end bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-300 ease-in-out">
         Create Company
     </button>
-    <button type="text" class="float-end mt-1" v-on:click="reload">
+    <button type="reset" class="float-end mt-1" v-on:click="reload">
         <svg fill="#2c778f" height="30px" width="50px" version="1.1" id="Capa_1"
              xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
              viewBox="0 0 489.698 489.698" xml:space="preserve">

@@ -33,11 +33,11 @@ class ProjectController extends Controller
             'description' => 'required',
             'company' => 'required',
         ]);
-        $requestData = $request->all();
-        $project = Project::create([
-            'name' => $requestData['name'],
-            'description' => $requestData['description'],
-            'company_id' => $requestData['company'],
+
+        Project::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'company_id' => $request->company,
         ]);
 
         return response()->json(['message' => 'Project created successfully.']);
@@ -54,7 +54,6 @@ class ProjectController extends Controller
             'description' => 'required|string',
             'company_id' => 'required',
         ]);
-        $project->company_id = $request->company_id;
 
         $project->update([
             'name' => $request->name,

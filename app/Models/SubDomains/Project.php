@@ -11,5 +11,5 @@ class Project extends Model
     use HasUlids, HasFactory;
 
     protected $table = 'projects';
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'company_id'];
 }
