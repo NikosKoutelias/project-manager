@@ -6,6 +6,7 @@ use App\Models\SubDomains\Project;
 use App\Models\SubDomains\User;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
+use PDOException;
 
 class ProjectController extends Controller
 {
@@ -40,7 +41,7 @@ class ProjectController extends Controller
                 'description' => $request->description,
                 'company_id' => $request->company,
             ]);
-        } catch (UniqueConstraintViolationException $e) {
+        } catch (UniqueConstraintViolationException|PDOException $e) {
             if ($e->getCode() == 23000) {
                 return response([
                     'errors' => [
@@ -77,7 +78,7 @@ class ProjectController extends Controller
                 'description' => $request->description,
                 'company_id' => $request->company_id,
             ]);
-        } catch (UniqueConstraintViolationException $e) {
+        } catch (UniqueConstraintViolationException|PDOException $e) {
             if ($e->getCode() == 23000) {
                 return response([
                     'errors' => [

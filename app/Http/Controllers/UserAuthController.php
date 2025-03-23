@@ -37,7 +37,7 @@ class UserAuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => Role::fromArray(strtoupper(Role::ROLES[$request->role])),
-            'permissions' => 'json'
+            'permissions' => '{"projects": [], "companies": []}'
         ]);
     }
 
@@ -68,7 +68,7 @@ class UserAuthController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'email' => 'required|string|email',
+            'email' => 'required|email|string|unique:users,email,',
             'role' => 'required|in:' . implode(',', array_keys(Role::ROLES)),
             'name' => 'required|string',
             'description' => 'string',
@@ -76,7 +76,7 @@ class UserAuthController extends Controller
         ]);
 
 
-        $user = User::find($request->id);
+        $user = User::findOrFail($request->id);
         if ($request->description) {
             $permissions = json_decode($user->permissions);
             $permissions->description = $request->description;
@@ -122,7 +122,7 @@ class UserAuthController extends Controller
 
     public function destroy(Request $request)
     {
-        $user = User::find($request->id);
+        $user = User::findOrFail($request->id);
         $user->delete();
         return response('User deleted successfully', 200);
     }

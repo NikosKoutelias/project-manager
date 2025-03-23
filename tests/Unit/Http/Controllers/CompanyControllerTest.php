@@ -205,4 +205,40 @@ class CompanyControllerTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['name', 'description', 'country_of_operation']);
     }
+
+    /**
+     * Test if the perUser method returns companies assigned to a user.
+     */
+    public function testPerUserReturnsAssignedCompanies()
+    {
+        // Arrange: Create a user with permissions and associated companies
+        $companies = Company::factory()->count(2)->create();
+        $permissions = ['companies' => $companies->pluck('id')->toArray()];
+        $this->user->update(['permissions' => json_encode($permissions)]);
+
+        // Act: Call the perUser endpoint
+        $response = $this->actingAs($this->user)->getJson(route('companies.perUser', $this->user->id));
+
+        // Assert: Verify the response and the structure
+        $response->assertOk();
+        $response->assertJsonCount(count($companies));
+        $response->assertJsonStructure([
+            '*' => ['id', 'name', 'description', 'country_of_operation'],
+        ]);
+    }
+
+    /**
+     * Test if the perUser method fails for an invalid user ID.
+     */
+    public function testPerUserFailsForInvalidUser()
+    {
+        // Arrange: Use a non-existent user ID
+        $invalidUserId = 999;
+
+        // Act: Call the perUser endpoint
+        $response = $this->actingAs($this->user)->getJson(route('companies.perUser', $invalidUserId));
+
+        // Assert: Verify the error response
+        $response->assertStatus(404);
+    }
 }

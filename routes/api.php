@@ -11,10 +11,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::put('/user/{id}', [UserAuthController::class, 'update']);
-    Route::delete('/user/{id}', [UserAuthController::class, 'destroy']);
-    Route::get('/users', [UserAuthController::class, 'index']);
-    Route::post('/user', [UserAuthController::class, 'create']);
+    Route::put('/user/{id}', [UserAuthController::class, 'update'])->name('user-auth.update');
+    Route::delete('/user/{id}', [UserAuthController::class, 'destroy'])->name('user-auth.destroy');
+    Route::get('/users', [UserAuthController::class, 'index'])->name('user-auth.index');
+    Route::post('/user', [UserAuthController::class, 'create'])->name('user-auth.register');
 
     Route::get('/companies/{userId}', [CompanyController::class, 'perUser'])->name('companies.perUser');
     Route::get('/projects/{userId}', [ProjectController::class, 'perUser'])->name('projects.perUser');

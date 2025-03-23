@@ -20,5 +20,9 @@ class UserApiTest extends TestCase
         $response->assertStatus(200);
     }
     public function test_user_get_unauthorized_response(): void
-    {}
+    {
+        $response = $this->get('api/user');
+
+        $response->assertStatus(302);
+    }
 }

@@ -216,7 +216,7 @@ class ProjectControllerTest extends TestCase
         $data = [
             'name' => 'Existing Project',
             'description' => 'Some description',
-            'company_id' => Company::first()->id,
+            'company_id' => $existingProject->company_id,
         ];
 
         // Act: Call the update method
