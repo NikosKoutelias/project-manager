@@ -1,7 +1,7 @@
 
 ## Project Management
 
-**Application that handles the management of companies, projects, users and their data. And a bunch of useful information about their operation.**
+**A SPA Application that handles the management of companies, projects, users and their data. And a bunch of useful information about their operation.**
 
 
 
@@ -19,7 +19,9 @@ There is a docker-compose.yml file and can be up and running in no time with `do
 
 ### Back-End
 
-#### The Project uses Domain principals with Sub-Domains and Controller-Service handle for pattern. Details:
+#### The Project uses Domain principals with Sub-Domains and Controller-Service handle for a pattern. The Vue hooks on binding.blade and monitors all calls
+
+### Details:
 
 > #### <u>Domain: </u> <br>
 >> **Company** <br>
@@ -38,6 +40,29 @@ There is a docker-compose.yml file and can be up and running in no time with `do
 > 
 >> <u>Casts:</u> Mutators and Accessors of a value object </br>
 >> <u>Listeners:</u> Events Listeners.
+
+### Front-End
+
+#### Project uses Pinia for state management and Vue Router 4 with Vite for Client-Side Routing 
+
+### Details:
+
+> **Pages** </br> * All project components.
+> 
+> **Admin** </br>
+>> Components for Admin pages and handles.
+> 
+> **User** </br>
+>> Components for User pages and handles.
+> 
+> **Widgets** </br>
+>> Reusable components based on needs.
+> 
+> **Store** </br>
+>> State management files and calls.
+> 
+> **router.js** </br>
+>> The router of application.
 
 
 
