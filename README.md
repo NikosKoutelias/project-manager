@@ -11,10 +11,11 @@ There is a docker-compose.yml file and can be up and running in no time with `do
 1) **`composer install`**
 2) **`npm-install`**
 3) **`./vendor/bin/sail up`**
-4) **`npm-run-dev`** 
+4) **`npm run dev`** 
 5) **`./vendor/bin/sail artisan migrate:fresh --seed`** 
 
    [//]: #"Comment" : If we have run sail before if mysql container fails we run `./vendor/bin/sail down --volumes` and then `./vendor/bin/sail up --build`
+    We let Vite running with npm run dev to compile and hot module replace.
 
 
 ## Architecture
