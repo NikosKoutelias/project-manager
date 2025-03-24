@@ -9,11 +9,13 @@
 There is a docker-compose.yml file and can be up and running in no time with `docker-compose up`.
 
 1) **`composer install`**
-2) **`npm-install`
-3)**`bash ./vendor/bin/sail up`**
-4)**`npm-run-dev`** 
-5)**`bash ./vendor/bin/sail artisan migrate:fresh --seed`**
-   [//]: # "Comment" : Because it is Sail we must give the appropriate format in our commands that's why we make the artisan through bash. If we make it just plain `php artisan` it won't work.
+2) **`npm-install`**
+3) **`./vendor/bin/sail up`**
+4) **`npm-run-dev`** 
+5) **`./vendor/bin/sail artisan migrate:fresh --seed`** 
+
+   [//]: #"Comment" : If we have run sail before if mysql container fails we run `./vendor/bin/sail down --volumes` and then `./vendor/bin/sail up --build`
+
 
 ## Architecture
 
@@ -64,7 +66,14 @@ There is a docker-compose.yml file and can be up and running in no time with `do
 > **router.js** </br>
 >> The router of application.
 
+### <u>Disclaimer:</u>
 
+* You can login with an admin user and assign companies and projects or monitor users with the following precreated user for convenience:
+
+`Username: test@example.com` </br>
+`Password: password`
+
+** After you register a user an email is sent to all admins. You can monitor all of them at http://localhost:8025/ via MailPit
 
 
     
