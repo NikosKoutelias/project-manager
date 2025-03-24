@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
+    private array $needs_filter = [
+        'name',
+        'description',
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -34,11 +39,12 @@ class CompanyController extends Controller
             'description' => 'required',
             'country_of_operation' => 'required',
         ]);
-        $requestData = $request->all();
-        $company = Company::create([
-            'name' => $requestData['name'],
-            'description' => $requestData['description'],
-            'country_of_operation' => CountryOfOperation::fromArray($requestData['country_of_operation']),
+        $sanitizedText = apply_filters($this->needs_filter, $request->all());
+
+        Company::create([
+            'name' => $sanitizedText['name'],
+            'description' => $sanitizedText['description'],
+            'country_of_operation' => CountryOfOperation::fromArray($request->country_of_operation),
         ]);
 
         return response()->json(['message' => 'Company created successfully.']);
@@ -53,11 +59,13 @@ class CompanyController extends Controller
             'name' => 'required|string',
             'description' => 'required|string',
             'country_of_operation' => 'required|in:' . implode(',', array_keys(CountryOfOperation::COUNTRIES)),
-            ]);
+        ]);
+
+        $sanitizedText = apply_filters($this->needs_filter, $request->all());
 
         $company->update([
-            'name' => $request->name,
-            'description' => $request->description,
+            'name' => $sanitizedText['name'],
+            'description' => $sanitizedText['description'],
             'country_of_operation' => CountryOfOperation::fromArray($request->country_of_operation)
         ]);
         return response('Country Updated successfully', 200);

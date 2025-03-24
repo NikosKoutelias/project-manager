@@ -10,6 +10,11 @@ use PDOException;
 
 class ProjectController extends Controller
 {
+    protected array $needs_filter = [
+        'name',
+        'description',
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -35,10 +40,12 @@ class ProjectController extends Controller
             'description' => 'required',
             'company' => 'required',
         ]);
+        $sanitizedText = apply_filters($this->needs_filter, $request->all());
+
         try {
             Project::create([
-                'name' => $request->name,
-                'description' => $request->description,
+                'name' => $sanitizedText['name'],
+                'description' => $sanitizedText['description'],
                 'company_id' => $request->company,
             ]);
         } catch (UniqueConstraintViolationException|PDOException $e) {
@@ -72,10 +79,13 @@ class ProjectController extends Controller
             'description' => 'required|string',
             'company_id' => 'required',
         ]);
+
+        $sanitizedText = apply_filters($this->needs_filter, $request->all());
+
         try {
             $project->update([
-                'name' => $request->name,
-                'description' => $request->description,
+                'name' => $sanitizedText['name'],
+                'description' => $sanitizedText['description'],
                 'company_id' => $request->company_id,
             ]);
         } catch (UniqueConstraintViolationException|PDOException $e) {

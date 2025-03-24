@@ -12,6 +12,11 @@ use Illuminate\Validation\Rules;
 
 class UserAuthController extends Controller
 {
+    protected array $needs_filter = [
+        'name',
+        'description'
+    ];
+
     public function index()
     {
         return User::all()->map(function ($user) {
@@ -27,15 +32,16 @@ class UserAuthController extends Controller
 
     public function create(Request $request)
     {
-
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $sanitizedText = apply_filters($this->needs_filter, $request->all());
+
         User::create([
-            'name' => $request->name,
+            'name' => $sanitizedText['name'],
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => Role::fromArray(strtoupper(Role::ROLES[$request->role])),
@@ -45,7 +51,6 @@ class UserAuthController extends Controller
 
     public function register(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
@@ -54,13 +59,17 @@ class UserAuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
+        $sanitizedText = apply_filters($this->needs_filter, $request->all());
+
         $user = User::create([
-            'name' => $request->name,
+            'name' => $sanitizedText['name'],
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => Role::fromArray('USER'),
         ]);
+
         $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
+
         return response()->json([
             'message' => 'User Created ',
             'access_token' => $token,
@@ -82,17 +91,18 @@ class UserAuthController extends Controller
             'permissions' => 'json'
         ]);
 
-
         $user = User::findOrFail($request->id);
+        $sanitizedText = apply_filters($this->needs_filter, $request->all());
+
         if ($request->description) {
             $permissions = json_decode($user->permissions);
-            $permissions->description = $request->description;
+            $permissions->description = $sanitizedText['description'];
             $user->permissions = json_encode($permissions);
         } else {
             $user->permissions = $request->permissions;
         }
         $user->update([
-            'name' => $request->name,
+            'name' => $sanitizedText['name'],
             'email' => $request->email,
             'role' => Role::fromArray($request->role)
         ]);
