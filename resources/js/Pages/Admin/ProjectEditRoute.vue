@@ -57,7 +57,7 @@ function submitForm() {
 
 function deleteProject() {
     axiosClient.delete(`api/project/${route.params.id}`).then((response) => {
-        router.replace({name: 'Companies'})
+        router.replace({name: 'Projects'})
     }).catch(error => {
         console.log(error.response);
     })

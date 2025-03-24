@@ -7,6 +7,7 @@ use App\Models\ValueObjects\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
 class UserAuthController extends Controller
@@ -24,13 +25,14 @@ class UserAuthController extends Controller
         });
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
 
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            ]);
+        ]);
 
         User::create([
             'name' => $request->name,
@@ -68,7 +70,12 @@ class UserAuthController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|string|unique:users,email,',
+            'email' => [
+                'required',
+                'email',
+                'string',
+                Rule::unique('users')->ignore($request->id),
+            ],
             'role' => 'required|in:' . implode(',', array_keys(Role::ROLES)),
             'name' => 'required|string',
             'description' => 'string',
