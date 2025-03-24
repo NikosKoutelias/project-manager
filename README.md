@@ -26,6 +26,8 @@ There is a docker-compose.yml file and can be up and running in no time with `do
 
 ### Details:
 
+[//]: #"Comment" : You will find it at `app/`
+
 > #### <u>Domain: </u> <br>
 >> **Company** <br>
 
@@ -49,6 +51,8 @@ There is a docker-compose.yml file and can be up and running in no time with `do
 #### Project uses Pinia for state management and Vue Router 4 with Vite for Client-Side Routing 
 
 ### Details:
+
+[//]: #"Comment" : You will find it at `resources/js`
 
 > **Pages** </br> * All project components.
 > 
